@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springmusic-deploy
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: springmusic
+  template:
+    metadata:
+      labels:
+        app: springmusic
+    spec:
+      containers:
+      - name: springmusic
+        image: ACR_NAME/spring-music:TAG
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springmusic-svc
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: springmusic
